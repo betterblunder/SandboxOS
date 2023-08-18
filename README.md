@@ -1,0 +1,1 @@
+inspired by https://github.com/home-assistant/operating-system
