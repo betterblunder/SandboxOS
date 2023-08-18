@@ -33,6 +33,8 @@ $(TARGETS_CONFIG): %-config:
 $(TARGETS): %: %-config
 	@echo "build $@"
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) VERSION_DEV=$(VERSION_DEV)
+	mv $O/images/sdcard.img $O/images/$@.img
+	cp $O/images/$@.img $O/images/$@_$(VERSION_DEV).img
 	@echo "finished $@"
 
 clean:
