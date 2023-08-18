@@ -5,6 +5,7 @@ jobs:
     strategy:
       matrix:
         board_name:
+          - raspberrypi4
           - raspberrypi4_64
     continue-on-error: true # allow other boards to continue even if one fails
     runs-on: ubuntu-latest
@@ -18,13 +19,15 @@ jobs:
         with:
           path: ~/.buildroot-ccache
           key: build_cache-${{ matrix.board_name }}-${{ github.sha }}
-          restore-keys: build_cache-${{ matrix.board_name }}-
+          restore-keys: |
+            build_cache-${{ matrix.board_name }}-
+            build_cache-
       - name: generate config
         run: make BR2_CCACHE=y ${{ matrix.board_name }}-config
       - name: build
-        run: make
+        run: make ${{ matrix.board_name }}
       - name: upload generated images
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.board_name }}-images
+          name: board images
           path: output/images/**.img*
