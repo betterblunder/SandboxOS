@@ -30,4 +30,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: board images
-          path: output/images/**.img*
+          path: |
+            output/images/**.img*
+            scripts/write_image.sh
