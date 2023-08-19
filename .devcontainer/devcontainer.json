@@ -5,6 +5,9 @@
   "build": {
     "dockerfile": "../Dockerfile"
   },
+  "mounts": [
+    "source=${localEnv:HOME}/.buildroot-ccache,target=/root/.buildroot-ccache,type=bind,consistency=cached"
+  ],
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {

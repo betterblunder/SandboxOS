@@ -23,13 +23,26 @@ jobs:
             build_cache-${{ matrix.board_name }}-
             build_cache-
       - name: generate config
-        run: make BR2_CCACHE=y ${{ matrix.board_name }}-config
+        run: make ${{ matrix.board_name }}-config
       - name: build
         run: make ${{ matrix.board_name }}
+      - name: prepare artifacts
+        run: mkdir artifacts && mv output/images/**.img* artifacts
       - name: upload generated images
         uses: actions/upload-artifact@v3
         with:
           name: board images
-          path: |
-            output/images/**.img*
-            scripts/write_image.sh
+          path: artifacts/
+  upload-developer-tools:
+    needs: build-images
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: prepare artifacts
+        run: mkdir artifacts && mv scripts artifacts
+      - name: upload scripts
+        uses: actions/upload-artifact@v3
+        with:
+          name: board images
+          path: artifacts/write_image.sh
