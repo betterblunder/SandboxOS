@@ -28,7 +28,10 @@ savedefconfig:
 
 $(TARGETS_CONFIG): %-config:
 	@echo "config $*"
+	mv $(DEFCONFIG_DIR)/$*_defconfig $(DEFCONFIG_DIR)/$*_defconfig.original
+	awk 1 $(DEFCONFIG_DIR)/$*_defconfig.original $(BUILDROOT_EXTERNAL)/overlay_defconfig > $(DEFCONFIG_DIR)/$*_defconfig
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) "$*_defconfig"
+	mv $(DEFCONFIG_DIR)/$*_defconfig.original $(DEFCONFIG_DIR)/$*_defconfig
 
 $(TARGETS): %: %-config
 	@echo "build $@"
